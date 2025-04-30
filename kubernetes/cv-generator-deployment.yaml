@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cv-generator
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cv-generator
+  template:
+    metadata:
+      labels:
+        app: cv-generator
+    spec:
+      containers:
+      - name: cv-generator
+        image: sarra5/cv-generator:latest
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cv-generator-service
+  namespace: dev
+spec:
+  selector:
+    app: cv-generator
+  ports:
+  - port: 3000
+    targetPort: 3000
+  type: ClusterIP
